@@ -49,7 +49,8 @@ export opaque type StateType =
   'SERVER_IS_NOT_READY' |
   'SERVER_IS_NOT_SHUTTING_DOWN' |
   'SERVER_IS_READY' |
-  'SERVER_IS_SHUTTING_DOWN';
+  'SERVER_IS_SHUTTING_DOWN' |
+  'SERVER_IS_HEALTHY';
 
 /**
  * @property registerShutdownHandler Registers teardown functions that are called when shutdown is initialized. All registered shutdown handlers are executed in the order they have been registered. After all shutdown handlers have been executed, Lightship asks `process.exit()` to terminate the process synchronously.

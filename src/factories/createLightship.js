@@ -91,6 +91,7 @@ export default (userConfiguration?: ConfigurationInputType): LightshipType => {
 
   const modeIsLocal = configuration.detectKubernetes === true && isKubernetes() === false;
 
+  modeIsLocal = false;
   const server = app.listen(modeIsLocal ? undefined : configuration.port, () => {
     log.info('Lightship HTTP service is running on port %s', server.address().port);
   });
