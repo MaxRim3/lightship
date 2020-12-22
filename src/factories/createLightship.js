@@ -89,9 +89,9 @@ export default (userConfiguration?: ConfigurationInputType): LightshipType => {
 
   const app = express();
 
-  const modeIsLocal = configuration.detectKubernetes === true && isKubernetes() === false;
+  let modeIsLocal = configuration.detectKubernetes === true && isKubernetes() === false;
 
-  modeIsLocal = false;
+  modeIsLocal = false; //remove this line if you are running multiple lightships locally and it will choose a random port each time.
   const server = app.listen(modeIsLocal ? undefined : configuration.port, () => {
     log.info('Lightship HTTP service is running on port %s', server.address().port);
   });
@@ -104,13 +104,13 @@ export default (userConfiguration?: ConfigurationInputType): LightshipType => {
     if (serverIsShuttingDown) {
       response.status(500).send(SERVER_IS_SHUTTING_DOWN);
     } else if (serverIsReady) {
-      response.send(SERVER_IS_READY);
+      response.send(SERVER_IS_HEALTHY);
     } else {
       response.status(500).send(SERVER_IS_NOT_READY);
     }
   });
 
-  app.get('/live', (request, response) => {
+  app.get('/liveness', (request, response) => {
     if (serverIsShuttingDown) {
       response.status(500).send(SERVER_IS_SHUTTING_DOWN);
     } else {
@@ -118,7 +118,7 @@ export default (userConfiguration?: ConfigurationInputType): LightshipType => {
     }
   });
 
-  app.get('/ready', (request, response) => {
+  app.get('/readiness', (request, response) => {
     if (serverIsReady) {
       response.send(SERVER_IS_READY);
     } else {
